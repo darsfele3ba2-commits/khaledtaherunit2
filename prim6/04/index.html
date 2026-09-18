@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>درس 🎯 لعبة الفارس - أنواع الخبر</title>
+    <!-- استدعاء خط احترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;      
+            --primary-light: #3b82f6; 
+            --secondary: #4f46e5;    
+            --success: #10b981;      
+            --danger: #ef4444;       
+            --warning: #f59e0b;      
+            --dark: #1e293b;         
+            --light: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .hidden { display: none !important; }
+        
+        /* --- الهيدر الرئيسي --- */
+        .header-main {
+            background: linear-gradient(135deg, #0f172a, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 20px 90px 20px; 
+            text-align: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-line1 {
+            font-size: clamp(1.1rem, 4vw, 1.5rem); 
+            font-weight: 700;
+            color: #e0e7ff;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .title-line2 {
+            font-size: clamp(2.5rem, 10vw, 4.5rem); 
+            font-weight: 900;
+            background: linear-gradient(to right, #fde047, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
+            line-height: 1.1;
+        }
+
+        .header-main h2 { font-size: clamp(1rem, 3vw, 1.3rem); font-weight: 600; color: #fdf2f8; margin-bottom: 8px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);}
+        .header-main p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); font-weight: 600; background: rgba(0,0,0,0.3); display: inline-block; padding: 6px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+
+        .header-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: 1;
+        }
+
+        /* --- الأزرار --- */
+        .btn {
+            background: linear-gradient(to bottom, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-bottom: 3px solid rgba(0,0,0,0.3);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+        .btn:active { transform: translateY(2px); border-bottom: 0px; margin-top: 3px; }
+        .btn-correct { filter: brightness(1.2); pointer-events: none; border-bottom-width: 0; transform: translateY(2px);}
+        .btn-wrong { filter: brightness(0.8); pointer-events: none; border-bottom-width: 0; transform: translateY(2px);}
+
+        /* --- الشاشة الرئيسية --- */
+        #home-screen {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+            padding-bottom: 80px;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .menu-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border-color: rgba(99, 102, 241, 0.2); }
+        .menu-card:hover::before { opacity: 1; }
+        
+        .menu-card .icon-container {
+            width: 80px; height: 80px;
+            margin: 0 auto 15px auto;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 3px 6px rgba(255,255,255,0.8), 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .menu-card .icon-container svg {
+            width: 40px; height: 40px; stroke: #1e3a8a; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .menu-card:hover .icon-container { transform: scale(1.1) rotate(10deg); }
+        .menu-card h3 { font-size: 1.4rem; color: var(--dark); font-weight: 800; margin-bottom: 8px;}
+        .menu-card p { font-size: 1rem; color: #64748b; font-weight: 600;}
+
+        /* --- شاشة اللعب --- */
+        #game-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-nav {
+            background: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+        }
+        .back-btn { background: #e2e8f0; color: var(--dark); border-bottom: 3px solid #cbd5e1; padding: 8px 15px;}
+        #game-progress { background: #3b82f6; color: white; padding: 6px 15px; border-radius: 20px;}
+        
+        .game-container {
+            flex: 1;
+            padding: 0 20px 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-box {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            border-right: 8px solid #4f46e5;
+            line-height: 1.6;
+        }
+
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        /* MCQ Style */
+        .options-grid { display: flex; flex-direction: column; gap: 15px; }
+        .options-grid .btn { padding: 18px; font-size: clamp(1.1rem, 3.5vw, 1.4rem); text-align: right; justify-content: flex-start; border-radius: 12px;}
+
+        /* True/False Style */
+        .tf-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+
+        /* Bubbles Style */
+        .bubbles-area {
+            position: relative; height: 400px;
+            background: linear-gradient(to bottom, #0f172a, #1e3a8a);
+            border-radius: 16px; overflow: hidden;
+            border: 4px solid #3b82f6; margin-top: 10px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        .bubble {
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(224,231,255,0.9));
+            color: #1e3a8a;
+            border: 2px solid #ffffff;
+            padding: 10px 5px;
+            border-radius: 30px;
+            font-weight: 800; font-size: clamp(0.85rem, 2vw, 1.05rem);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2), inset -4px -4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            width: 22%;
+            transition: transform 0.2s, background 0.2s;
+            z-index: 5;
+        }
+        .bubble:hover { transform: scale(1.05); }
+        .bubble::after {
+            content: ''; position: absolute; top: 10%; left: 15%;
+            width: 20%; height: 20%; background: rgba(255,255,255,0.8);
+            border-radius: 50%; filter: blur(2px);
+        }
+
+        /* Shooting Style */
+        .shooting-area {
+            position: relative; height: 400px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect fill="%23e0fbfc" width="100%" height="100%"/><circle fill="%23bae6fd" cx="20%" cy="30%" r="50"/><circle fill="%23bae6fd" cx="80%" cy="60%" r="70"/><circle fill="%23bae6fd" cx="50%" cy="80%" r="40"/></svg>') no-repeat center center;
+            background-size: cover; border-radius: 16px; overflow: hidden;
+            border: 4px solid #3b82f6; margin-top: 10px; box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+        .target-bird {
+            position: absolute; background: white; color: var(--dark);
+            padding: 10px 20px; border-radius: 30px; font-weight: 800; font-size: clamp(0.95rem, 3vw, 1.15rem);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15); cursor: crosshair;
+            border: 3px solid var(--warning); white-space: nowrap; transition: background 0.2s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .target-bird:hover { transform: scale(1.05); background: #fffbeb; }
+
+        /* Modal Overlay */
+        .overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+        .modal {
+            background: white; padding: 40px; border-radius: 25px;
+            text-align: center; max-width: 90%; width: 400px;
+            transform: scale(0.7) translateY(50px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .overlay.active .modal { transform: scale(1) translateY(0); }
+        .modal-icon { display: flex; justify-content: center; margin-bottom: 20px; }
+
+        /* Summary Errors Scrolling */
+        .errors-list::-webkit-scrollbar { width: 8px; }
+        .errors-list::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
+        .errors-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        .errors-list::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* الفوتر (Footer) */
+        .footer-main {
+            background: var(--dark); color: #cbd5e1;
+            text-align: center; padding: 25px 20px; margin-top: auto;
+            border-top: 4px solid var(--primary);
+        }
+        .footer-main p { margin: 5px 0; font-size: 1.1rem; font-weight: 600;}
+        .footer-main .designer { font-size: 1rem; color: #94a3b8; font-weight: 400;}
+
+        /* WhatsApp */
+        .whatsapp-float {
+            position: fixed; bottom: 25px; left: 25px;
+            background: #25d366; color: white;
+            width: 65px; height: 65px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            text-decoration: none; box-shadow: 0 8px 15px rgba(37, 211, 102, 0.4);
+            z-index: 100; transition: all 0.3s;
+        }
+        .whatsapp-float:hover { transform: scale(1.15) rotate(-5deg); box-shadow: 0 12px 20px rgba(37, 211, 102, 0.6); }
+        .whatsapp-float svg { width: 35px; height: 35px; fill: currentColor; }
+
+        /* Confetti effect */
+        .confetti {
+            position: fixed; top: -10px; width: 12px; height: 12px; z-index: 9999;
+            animation: fall linear forwards; border-radius: 3px;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر مع اللوجو -->
+    <header class="header-main" id="main-header">
+        <div class="header-content">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                <!-- اللوجو (على اليمين) -->
+                <img src="https://placehold.co/260x260/1e3a8a/ffffff?text=AlFares" onerror="this.onerror=null; this.src='logo.jpg';" alt="شعار الفارس" style="width: 260px; height: 260px; border-radius: 30px; border: 4px solid var(--warning); box-shadow: 0 8px 16px rgba(0,0,0,0.4); background-color: white; object-fit: cover; flex-shrink: 0;">
+                
+                <!-- النصوص -->
+                <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <h1 class="title-line1">
+                        درس 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fde047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                        لعبة
+                    </h1>
+                    <h1 class="title-line2">الفارس</h1>
+                    <h2>الصف السادس الابتدائي - الوحدة الثانية</h2>
+                    <p style="margin-top: 10px;">القواعد النحوية: أنواع الخبر</p>
+                </div>
+            </div>
+        </div>
+        <!-- تموجات زخرفية -->
+        <svg class="header-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#f0f4f8" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,170.7C960,160,1056,192,1152,208C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </header>
+
+    <!-- الشاشة الرئيسية -->
+    <div id="home-screen">
+        <div class="grid-menu" id="menu-grid">
+            <!-- سيتم حقن البطاقات هنا برمجياً -->
+        </div>
+    </div>
+
+    <!-- شاشة اللعب -->
+    <div id="game-screen" class="hidden">
+        <div class="game-nav">
+            <button class="btn back-btn" onclick="returnToMenu()">
+                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                رجوع
+            </button>
+            <strong id="game-title">عنوان اللعبة</strong>
+            <span id="game-progress">1 / 25</span>
+        </div>
+        <div class="game-container" id="game-container">
+            <!-- سيتم حقن الأسئلة هنا برمجياً -->
+        </div>
+    </div>
+
+    <!-- نافذة الملاحظات السريعة -->
+    <div class="overlay" id="feedback-modal">
+        <div class="modal">
+            <div class="modal-icon" id="feedback-icon"></div>
+            <h2 id="feedback-title" style="font-size: 2.5rem; font-weight: 900;">إجابة صحيحة!</h2>
+        </div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer class="footer-main" id="main-footer">
+        <p>جميع الحقوق محفوظة &copy; | درس ولعبة الفارس</p>
+        <p class="designer">الأستاذ / خالد طاهر</p>
+    </footer>
+
+    <!-- زر الواتساب -->
+    <a href="https://wa.me/201201113833" class="whatsapp-float" target="_blank" title="تواصل معنا">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.656.843 5.12 2.26 7.15L.626 24l5.01-1.61c1.983 1.25 4.27 1.91 6.395 1.91 6.646 0 12.03-5.385 12.03-12.031S18.677 0 12.031 0zm6.544 17.202c-.273.766-1.58 1.464-2.185 1.503-.56.035-1.28.23-4.085-.86-3.39-1.32-5.59-4.78-5.736-4.97-.145-.19-1.37-1.82-1.37-3.475 0-1.655.857-2.47 1.164-2.8.307-.33.67-.413.89-.413.22 0 .44 0 .633.01.205.01.482-.08.736.53.264.634.904 2.203.984 2.366.08.163.133.353.033.553-.1.2-.153.326-.307.506-.154.18-.32.38-.453.506-.153.153-.314.316-.134.626.18.31.8 1.32 1.71 2.13.176.157.363.31.558.45 1.05.76 1.83 1.05 2.13 1.18.3.13.474.11.652-.09.18-.205.766-.893.97-1.2.204-.307.41-.256.69-.153.28.103 1.77.836 2.074.99.304.153.506.23.582.356.076.126.076.73-.197 1.496z"/>
+        </svg>
+    </a>
+
+<script>
+    const allGamesData = [
+{
+            id: "bubbles1", title: "الفقاعات المتساقطة", type: "bubbles", desc: "مفردات ومفاهيم أنواع الخبر",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>`,
+            questions: [
+                { q: "ما مرادف «الرابط» في باب الخبر؟", options: ["الضمير الذي يعود على المبتدأ", "الفعل الرئيس في الجملة", "حرف الجر", "علامة الإعراب"], ans: 0 },
+                { q: "ما مرادف «شبه الجملة»؟", options: ["ظرف أو جار ومجرور لا يشكلان جملة تامة", "جملة اسمية كاملة", "جملة فعلية كاملة", "فعل وفاعل فقط"], ans: 0 },
+                { q: "ما مضاد «خبر مفرد»؟", options: ["خبر جملة أو شبه جملة", "خبر مرفوع", "خبر منصوب", "خبر مجرور"], ans: 0 },
+                { q: "ما نوع الضمير في «درجاته» (فاعل في جملة تحسّنت درجاته)؟", options: ["ضمير متصل", "ضمير منفصل", "ضمير مستتر", "اسم ظاهر"], ans: 0 },
+                { q: "ما نوع الضمير في الفعل «يوفّر» (الفاعل)؟", options: ["ضمير مستتر تقديره (هو)", "ضمير متصل", "ضمير منفصل", "اسم ظاهر"], ans: 0 },
+                { q: "ما مرادف «بارزًا» في وصف الرابط؟", options: ["ظاهرًا مكتوبًا", "غير موجود", "محذوفًا", "مقدَّرًا فقط"], ans: 0 },
+                { q: "ما مرادف «مستترًا» في وصف الرابط؟", options: ["غير ظاهر، مُقدَّرًا", "مكتوبًا بوضوح", "محذوفًا نهائيًا", "غير موجود إطلاقًا"], ans: 0 },
+                { q: "ما معنى «يطابقه في النوع والعدد» بخصوص الرابط؟", options: ["يتوافق معه من حيث التذكير/التأنيث والإفراد/التثنية/الجمع", "يتوافق معه في الحركة فقط", "يتوافق معه في الحرف الأول", "لا معنى محددًا لذلك"], ans: 0 },
+                { q: "ما مرادف «ظرف» في أنواع شبه الجملة؟", options: ["اسم يدل على زمان أو مكان", "حرف جر", "فعل ماضٍ", "اسم إشارة"], ans: 0 },
+                { q: "ما مثال على ظرف زمان من الدرس؟", options: ["غدًا / صباحًا / مساءً", "داخل / بين / فوق", "في / من / إلى", "هذا / ذلك"], ans: 0 },
+                { q: "ما مثال على ظرف مكان من الدرس؟", options: ["داخل / بين / فوق", "غدًا / صباحًا", "أمس / اليوم", "لاحقًا / آنفًا"], ans: 0 },
+                { q: "ما مرادف «جار ومجرور»؟", options: ["حرف جر واسم مجرور بعده", "فعل وفاعل", "مبتدأ وخبر", "اسم وصفته"], ans: 0 },
+                { q: "ما مثال على جار ومجرور من الدرس؟", options: ["في الحديقة / من ذهب / على المائدة", "غدًا / صباحًا / مساءً", "داخل / بين / فوق", "هذا / ذلك / أولئك"], ans: 0 },
+                { q: "ما جمع كلمة «خبر» في باب النحو؟", options: ["أخبار", "خُبراء", "خِبرات", "خَبَرات"], ans: 0 },
+                { q: "ما مضاد «مزدحِم» الواردة في تدريبات الدرس؟", options: ["فارغ / خالٍ", "ممتلئ", "مكتظّ", "واسع فقط"], ans: 0 },
+                { q: "ما مرادف «مُزدحِم»؟", options: ["مُكتظّ / ممتلئ", "فارغ", "هادئ", "منظّم"], ans: 0 },
+                { q: "ما معنى «جليلة» في «خدماتهم جليلة»؟", options: ["عظيمة / كبيرة القدر", "قليلة", "بسيطة", "سريعة"], ans: 0 },
+                { q: "ما معنى «وفير» في «إنتاجهما وفير»؟", options: ["كثير", "قليل", "نادر", "بطيء"], ans: 0 },
+                { q: "ما مرادف «يعكس» في «يعكس شخصيتك»؟", options: ["يُظهر / يدل على", "يُخفي", "يُلغي", "يُبعد"], ans: 0 },
+                { q: "ما مرادف «مُتقَن» في «عملهنّ متقَن»؟", options: ["منجَز بإحكام وجودة", "مُهمَل", "بطيء الإنجاز", "غير مكتمل"], ans: 0 }
+            ]
+        },
+{
+            id: "mcq1", title: "اختيار من متعدد", type: "mcq", desc: "أسئلة على قاعدة أنواع الخبر",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`,
+            questions: [
+                { q: "كم نوعًا للخبر في الجملة الاسمية؟", options: ["ثلاثة أنواع", "نوعان", "أربعة أنواع", "خمسة أنواع"], ans: 0 },
+                { q: "ما أنواع الخبر في الجملة الاسمية؟", options: ["مفرد، وجملة، وشبه جملة", "ماضٍ ومضارع وأمر", "مذكر ومؤنث", "مرفوع ومنصوب"], ans: 0 },
+                { q: "ما تعريف الخبر المفرد؟", options: ["ما ليس جملة ولا شبه جملة", "ما جاء جملة اسمية فقط", "ما جاء ظرفًا فقط", "ما جاء فعلًا فقط"], ans: 0 },
+                { q: "ماذا يُسمى الضمير الذي يربط جملة الخبر بالمبتدأ؟", options: ["الرابط", "الفاعل", "النائب", "التمييز"], ans: 0 },
+                { q: "من أي شيئين يتكوّن شبه الجملة الذي يقع خبرًا؟", options: ["ظرف، أو جار ومجرور", "فعل وفاعل", "مبتدأ وخبر", "اسم وصفة"], ans: 0 },
+                { q: "«المتحف قريبٌ» - ما نوع الخبر؟", options: ["مفرد", "جملة اسمية", "جملة فعلية", "شبه جملة"], ans: 0 },
+                { q: "«العمل أساسه النجاح» - ما نوع الخبر؟", options: ["جملة اسمية", "مفرد", "جملة فعلية", "شبه جملة"], ans: 0 },
+                { q: "«التخطيط يوفّر الوقت» - ما نوع الخبر؟", options: ["جملة فعلية", "مفرد", "جملة اسمية", "شبه جملة"], ans: 0 },
+                { q: "«الاجتماع غدًا» - ما نوع الخبر؟", options: ["شبه جملة (ظرف)", "مفرد", "جملة اسمية", "جملة فعلية"], ans: 0 },
+                { q: "«الزهرة في الحديقة» - ما نوع الخبر؟", options: ["شبه جملة (جار ومجرور)", "مفرد", "جملة اسمية", "جملة فعلية"], ans: 0 },
+                { q: "في جملة «العمل أساسه النجاح» ما الرابط الذي يربط جملة الخبر بالمبتدأ؟", options: ["الهاء في (أساسه)", "لا يوجد رابط", "كلمة (العمل)", "كلمة (النجاح)"], ans: 0 },
+                { q: "في جملة «التخطيط يوفّر الوقت» أين يكمن الرابط؟", options: ["الضمير المستتر في الفعل (يوفّر)", "في كلمة (الوقت)", "لا يوجد رابط لأنها فعلية", "في حرف الجر"], ans: 0 },
+                { q: "هل يجب أن يكون الرابط ظاهرًا دائمًا؟", options: ["لا، قد يكون بارزًا أو مستترًا", "نعم، يجب أن يكون ظاهرًا دائمًا", "لا يوجد رابط أصلًا", "الرابط حرف دائمًا"], ans: 0 },
+                { q: "الخبر الذي يأتي جملة اسمية أو فعلية يُسمى:", options: ["خبر جملة", "خبر مفرد", "خبر شبه جملة", "خبر منصوب"], ans: 0 },
+                { q: "الخبر الذي يأتي ظرفًا أو جارًّا ومجرورًا يُسمى:", options: ["خبر شبه جملة", "خبر مفرد", "خبر جملة", "خبر مرفوع"], ans: 0 },
+                { q: "«الصديقان متعاونان» - ما نوع الخبر؟", options: ["مفرد", "جملة اسمية", "جملة فعلية", "شبه جملة"], ans: 0 },
+                { q: "«الفلاحون نشيطون» - ما نوع الخبر؟", options: ["مفرد", "جملة اسمية", "جملة فعلية", "شبه جملة"], ans: 0 },
+                { q: "«الكتب داخل الحقيبة» - ما نوع الخبر؟", options: ["شبه جملة (ظرف)", "مفرد", "جملة اسمية", "جملة فعلية"], ans: 0 },
+                { q: "متى يُشترط وجود رابط في الخبر؟", options: ["عندما يكون الخبر جملة", "عندما يكون الخبر مفردًا", "دائمًا في كل الحالات", "لا يُشترط أبدًا"], ans: 0 },
+                { q: "ما الذي يجب أن يُطابق فيه الرابط المبتدأ؟", options: ["النوع والعدد", "الإعراب فقط", "الحركة فقط", "الحرف الأول فقط"], ans: 0 }
+            ]
+        },
+{
+            id: "shoot1", title: "التنشين والاصطياد", type: "shooting", desc: "اصطد نوع الخبر الصحيح",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>`,
+            questions: [
+                { q: "«المسؤول يدرس قراراته» - ما نوع الخبر؟", options: ["جملة فعلية", "مفرد", "جملة اسمية", "شبه جملة"], ans: 0 },
+                { q: "«جدول الأعمال مزدحمٌ» - ما نوع الخبر؟", options: ["مفرد", "جملة اسمية", "جملة فعلية", "شبه جملة"], ans: 0 },
+                { q: "«اللافتة على الحائط» - ما نوع الخبر؟", options: ["شبه جملة (جار ومجرور)", "مفرد", "جملة اسمية", "جملة فعلية"], ans: 0 },
+                { q: "«الالتزام فوائده عظيمة» - ما نوع الخبر؟", options: ["جملة اسمية", "مفرد", "جملة فعلية", "شبه جملة"], ans: 0 },
+                { q: "«الاجتماع صباحًا» - ما نوع الخبر؟", options: ["شبه جملة (ظرف)", "مفرد", "جملة اسمية", "جملة فعلية"], ans: 0 },
+                { q: "«الحاسوب فوائده كثيرة» - ما المبتدأ الثاني في جملة الخبر؟", options: ["فوائد", "الحاسوب", "كثيرة", "لا يوجد مبتدأ ثانٍ"], ans: 0 },
+                { q: "«العلماء خدماتهم جليلة» - ما الرابط في جملة الخبر؟", options: ["الهاء في (خدماتهم)", "كلمة (العلماء)", "كلمة (جليلة)", "لا رابط هنا"], ans: 0 },
+                { q: "«الصديقان تعاونهما رائع» - ما الرابط؟", options: ["الهما في (تعاونهما)", "كلمة (الصديقان)", "كلمة (رائع)", "لا رابط هنا"], ans: 0 },
+                { q: "«القمر سطع نوره» - ما الفاعل في جملة الخبر الفعلية؟", options: ["نوره", "القمر", "سطع", "لا فاعل ظاهر"], ans: 0 },
+                { q: "«الإنجاز يمنح الثقة لصاحبه» - ما الفاعل في جملة الخبر؟", options: ["ضمير مستتر تقديره هو", "الإنجاز", "الثقة", "صاحبه"], ans: 0 },
+                { q: "«التلميذ تحسّنت درجاته» - ما الفاعل في جملة الخبر؟", options: ["درجاته", "التلميذ", "تحسّنت", "لا فاعل"], ans: 0 },
+                { q: "«لقاء الأصدقاء مساءً» - ما نوع شبه الجملة؟", options: ["ظرف زمان", "ظرف مكان", "جار ومجرور", "لا شيء مما سبق"], ans: 0 },
+                { q: "«الوقت من ذهب» - ما نوع شبه الجملة؟", options: ["جار ومجرور", "ظرف زمان", "ظرف مكان", "خبر مفرد"], ans: 0 },
+                { q: "«المعلمة بين الصفوف» - ما نوع شبه الجملة؟", options: ["ظرف مكان", "ظرف زمان", "جار ومجرور", "خبر مفرد"], ans: 0 },
+                { q: "«الطعام على المائدة» - ما نوع شبه الجملة؟", options: ["جار ومجرور", "ظرف زمان", "ظرف مكان", "خبر مفرد"], ans: 0 },
+                { q: "«الحديقة كثيرة الأزهار» - كيف تتحول لخبر جملة اسمية؟", options: ["الحديقة أزهارها كثيرة", "الحديقة كثيرة أزهار", "الحديقة فيها أزهار كثيرة", "أزهار الحديقة كثيرة جدًا"], ans: 0 },
+                { q: "«الجو شديد الحرارة» - كيف تتحول لخبر جملة اسمية؟", options: ["الجو حرارته شديدة", "الجو شديد جدًا", "حرارة الجو شديدة اليوم", "الجو حار شديد"], ans: 0 },
+                { q: "«الطائر جميل الشكل» - كيف تتحول لخبر جملة اسمية؟", options: ["الطائر شكله جميل", "الطائر جميل جدًا", "شكل الطائر جميل ورائع", "الطائر ذو شكل جميل"], ans: 0 },
+                { q: "«الرياضة عديدة الفوائد» - كيف تتحول لخبر جملة اسمية؟", options: ["الرياضة فوائدها عديدة", "الرياضة عديدة جدًا", "فوائد الرياضة عديدة ومتنوعة", "الرياضة ذات فوائد عديدة"], ans: 0 },
+                { q: "«أبوك خبراته كثيرة» - ما نوع خبر المبتدأ الأول (أبوك)؟", options: ["جملة اسمية (خبراته كثيرة)", "مفرد (كثيرة)", "شبه جملة", "جملة فعلية"], ans: 0 }
+            ]
+        },
+{
+            id: "tf1", title: "صح أم خطأ", type: "true_false", desc: "اختبر فهمك لقاعدة أنواع الخبر",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+            questions: [
+                { q: "للخبر في الجملة الاسمية ثلاثة أنواع.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "الخبر المفرد هو ما جاء جملة أو شبه جملة.", options: ["صح", "خطأ"], ans: 1 },
+                { q: "خبر الجملة يجب أن يشتمل على رابط يعود على المبتدأ.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "الرابط في جملة الخبر يكون دائمًا بارزًا ولا يكون مستترًا أبدًا.", options: ["صح", "خطأ"], ans: 1 },
+                { q: "شبه الجملة يكون ظرفًا أو جارًّا ومجرورًا.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«المتحف قريبٌ» الخبر فيها جملة اسمية.", options: ["صح", "خطأ"], ans: 1 },
+                { q: "«العمل أساسه النجاح» الخبر فيها جملة اسمية.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«التخطيط يوفّر الوقت» الخبر فيها جملة فعلية.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«الاجتماع غدًا» الخبر فيها شبه جملة ظرف.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«الزهرة في الحديقة» الخبر فيها مفرد.", options: ["صح", "خطأ"], ans: 1 },
+                { q: "الرابط يجب أن يطابق المبتدأ في النوع والعدد.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "الخبر المفرد لا يحتاج إلى رابط.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«جدول الأعمال مزدحمٌ» - الخبر هنا شبه جملة.", options: ["صح", "خطأ"], ans: 1 },
+                { q: "«اللافتة على الحائط» - الخبر هنا شبه جملة جار ومجرور.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«الصديقان تعاونهما رائع» - الرابط هو الألف في (تعاونهما).", options: ["صح", "خطأ"], ans: 1 },
+                { q: "«القمر سطع نوره» - الفاعل في جملة الخبر هو (نوره).", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«الإنجاز يمنح الثقة لصاحبه» - الفاعل ضمير بارز.", options: ["صح", "خطأ"], ans: 1 },
+                { q: "«لقاء الأصدقاء مساءً» - الخبر شبه جملة ظرف زمان.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "«المعلمة بين الصفوف» - الخبر شبه جملة ظرف مكان.", options: ["صح", "خطأ"], ans: 0 },
+                { q: "لا يمكن تحويل الخبر المفرد إلى خبر جملة اسمية أبدًا.", options: ["صح", "خطأ"], ans: 1 }
+            ]
+        },
+{
+            id: "genius1", title: "تحدي العباقرة", type: "mcq", desc: "تدريبات الكتاب وأسئلة أعمق في أنواع الخبر",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2z"></path><line x1="9" y1="21" x2="15" y2="21"></line><line x1="10" y1="18" x2="14" y2="18"></line></svg>`,
+            questions: [
+                { q: "ما الضبط الصحيح لكلمة (الالتزام) في: «المسؤولية تعني الالتزام»؟", options: ["الالتزامَ (منصوبة، مفعول به)", "الالتزامُ (مرفوعة)", "الالتزامِ (مجرورة)", "لا ضبط لها"], ans: 0 },
+                { q: "ما الضبط الصحيح لكلمة (الثقة) في: «القائد يبثّ الثقة في الجنود»؟", options: ["الثقةَ (منصوبة، مفعول به)", "الثقةُ (مرفوعة)", "الثقةِ (مجرورة)", "لا ضبط لها"], ans: 0 },
+                { q: "ما الضبط الصحيح لكلمة (عادة) في: «البحث عن الأعذار عادة سيئة»؟", options: ["عادةٌ (مرفوعة، خبر)", "عادةً (منصوبة)", "عادةٍ (مجرورة)", "لا ضبط لها"], ans: 0 },
+                { q: "«ذو علمٍ» - أي جملة استخدمتها بشكل صحيح خبرًا؟", options: ["أخي ذو علمٍ واسعٍ", "ذو علمٍ أخي", "علمٍ ذو أخي", "أخي علمٍ ذو"], ans: 0 },
+                { q: "«يحققون أهدافهم» - أي جملة استخدمتها بشكل صحيح خبرًا؟", options: ["الطلاب المجتهدون يحققون أهدافهم", "يحققون أهدافهم الطلاب المجتهدون فقط", "أهدافهم يحققون الطلاب", "لا يصح استخدامها خبرًا"], ans: 0 },
+                { q: "«التعلّم يطوّر الذات» - ما إعراب جملة (يطوّر الذات)؟", options: ["في محل رفع خبر", "في محل نصب خبر", "في محل جر", "لا محل لها من الإعراب"], ans: 0 },
+                { q: "«الاختباران في الكتاب» - ما إعراب (في الكتاب)؟", options: ["جار ومجرور في محل رفع خبر", "جار ومجرور في محل نصب", "مبتدأ مؤخر", "لا محل له من الإعراب"], ans: 0 },
+                { q: "«أبوك خبراته كثيرة» - ما إعراب (خبراته)؟", options: ["مبتدأ ثانٍ مرفوع وعلامة رفعه الضمة", "خبر منصوب", "فاعل مرفوع", "مفعول به"], ans: 0 },
+                { q: "«أبوك خبراته كثيرة» - ما إعراب (كثيرة)؟", options: ["خبر المبتدأ الثاني مرفوع وعلامة رفعه الضمة", "مبتدأ أول", "مفعول به منصوب", "حال منصوب"], ans: 0 },
+                { q: "لماذا يحتاج خبر الجملة إلى رابط بخلاف الخبر المفرد؟", options: ["لأن جملة الخبر منفصلة تركيبيًا عن المبتدأ فيلزم ضمير يربطها به", "لأن الخبر المفرد أطول من الجملة", "لا حاجة فعلية لذلك", "لأن الجملة الفعلية لا تحتاج فاعلًا"], ans: 0 },
+                { q: "ما الفرق الجوهري بين خبر شبه الجملة وخبر الجملة؟", options: ["خبر شبه الجملة لا يحتاج رابطًا لأنه ليس جملة تامة، بخلاف خبر الجملة", "كلاهما يحتاجان رابطًا دائمًا", "لا فرق بينهما إطلاقًا", "خبر الجملة لا يحتاج رابطًا بخلاف شبه الجملة"], ans: 0 },
+                { q: "كيف تحدد أن الخبر جملة فعلية وليس جملة اسمية؟", options: ["إذا بدأت جملة الخبر بفعل تكون فعلية، وإذا بدأت باسم تكون اسمية", "لا فرق بينهما في التحديد", "الجملة الفعلية لا تحتوي على رابط أبدًا", "الجملة الاسمية لا تبدأ باسم أبدًا"], ans: 0 },
+                { q: "ما أهمية الرابط في جملة الخبر لفهم المعنى؟", options: ["يوضح أن جملة الخبر تعود فعلًا على المبتدأ وتخبر عنه تحديدًا", "لا أهمية له في المعنى", "يُستخدم فقط للزينة اللفظية", "يُغيّر زمن الجملة فقط"], ans: 0 },
+                { q: "لماذا تُعرب شبه الجملة (الظرف أو الجار والمجرور) في محل رفع خبر رغم أنها ليست مرفوعة لفظًا؟", options: ["لأنها تقوم مقام الخبر المرفوع فتأخذ حكمه الإعرابي (محل الرفع) دون ظهور علامة الرفع عليها", "لأنها مرفوعة لفظًا بالفعل", "لأن شبه الجملة لا تُعرب أصلًا", "لأنها فعل مضارع"], ans: 0 },
+                { q: "ما العلاقة بين تعدد أنواع الخبر وثراء التعبير في اللغة العربية؟", options: ["تعدد الأنواع يمنح الكاتب مرونة في صياغة الجملة وتنويع أسلوبه", "لا علاقة بين الأمرين", "تعدد الأنواع يُعقّد اللغة بلا فائدة", "الخبر المفرد هو الوحيد المفيد في التعبير"], ans: 0 },
+                { q: "كيف يمكن تحويل خبر مفرد إلى خبر جملة اسمية مع الحفاظ على المعنى؟", options: ["بإضافة ضمير يعود على المبتدأ وجعل الوصف خبرًا لذلك الضمير، مثل: الحديقة كثيرة الأزهار ← الحديقة أزهارها كثيرة", "بحذف المبتدأ كليًا", "بتحويل الجملة إلى جملة فعلية فقط", "لا يمكن تحويل الخبر المفرد أبدًا"], ans: 0 },
+                { q: "ما الخطأ الشائع الذي يقع فيه الطلاب عند إعراب خبر الجملة؟", options: ["الاكتفاء بإعراب الجملة ككل دون تفصيل عناصرها (المبتدأ الثاني والخبر، أو الفعل والفاعل) قبل القول إنها في محل رفع خبر", "تفصيل عناصر الجملة بدقة زائدة", "عدم ذكر المبتدأ الأول إطلاقًا", "لا يوجد خطأ شائع في هذا الباب"], ans: 0 },
+                { q: "ما القاعدة العامة لتمييز نوع الخبر في أي جملة اسمية؟", options: ["ننظر: هل الخبر كلمة واحدة (مفرد)، أم جملة تامة بها رابط (جملة)، أم ظرف/جار ومجرور (شبه جملة)؟", "ننظر فقط إلى طول الجملة", "ننظر إلى عدد الكلمات في المبتدأ فقط", "لا توجد قاعدة عامة لذلك"], ans: 0 },
+                { q: "لماذا يُعد ضبط أواخر الكلمات بالشكل (كما في تدريب 6) مهمًا في هذا الباب؟", options: ["لأن الضبط الصحيح يعكس الفهم الدقيق للموقع الإعرابي للكلمة في الجملة", "لأن الضبط لا علاقة له بالمعنى النحوي", "لأن الضبط يُستخدم للزينة فقط في الكتابة", "لا أهمية للضبط في هذا الباب"], ans: 0 },
+                { q: "ما الأثر التعبيري لاستخدام خبر جملة بدلًا من خبر مفرد في وصف شيء ما؟", options: ["يمنح تفصيلًا أكبر ووصفًا أكثر دقة وثراءً مقارنة بالخبر المفرد المختصر", "لا أثر تعبيري لذلك", "الخبر المفرد دائمًا أدق وصفًا", "استخدام خبر جملة يُضعف المعنى دائمًا"], ans: 0 }
+            ]
+        }
+    ];
+
+    const LESSON_NAME = "القواعد النحوية: أنواع الخبر";
+
+    // --- محرك الصوت للمؤثرات التفاعلية ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }
+
+    function playTone(freq, type, duration, vol = 0.1) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playCorrect() {
+        initAudio();
+        playTone(523.25, 'sine', 0.1, 0.1); 
+        setTimeout(() => playTone(659.25, 'sine', 0.1, 0.1), 100); 
+        setTimeout(() => playTone(783.99, 'sine', 0.2, 0.15), 200); 
+        setTimeout(() => playTone(1046.50, 'sine', 0.4, 0.2), 300); 
+        triggerConfetti();
+    }
+
+    function playWrong() {
+        initAudio();
+        playTone(300, 'sawtooth', 0.15, 0.1);
+        setTimeout(() => playTone(200, 'sawtooth', 0.25, 0.15), 150);
+        
+        const qBox = document.querySelector('.question-box');
+        if(qBox) {
+            qBox.classList.remove('shake');
+            void qBox.offsetWidth; 
+            qBox.classList.add('shake');
+        }
+    }
+
+    // --- مؤثرات بصرية ---
+    function triggerConfetti() {
+        const colors = ['#f72585', '#4cc9f0', '#fee440', '#00f5d4', '#8b5cf6'];
+        for(let i=0; i<40; i++) {
+            let conf = document.createElement('div');
+            conf.className = 'confetti';
+            conf.style.left = Math.random() * 100 + 'vw';
+            conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            conf.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            document.body.appendChild(conf);
+            setTimeout(() => conf.remove(), 3000);
+        }
+    }
+
+    function shuffleArray(arr) {
+        return arr.map(a => ({sort: Math.random(), value: a}))
+            .sort((a, b) => a.sort - b.sort)
+            .map(a => a.value);
+    }
+
+    function showFeedback(isCorrect, callback) {
+        const modal = document.getElementById('feedback-modal');
+        const icon = document.getElementById('feedback-icon');
+        const title = document.getElementById('feedback-title');
+        
+        if (isCorrect) {
+            playCorrect();
+            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
+            title.textContent = 'إجابة صحيحة، بطل!';
+            title.style.color = 'var(--success)';
+        } else {
+            playWrong();
+            icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
+            title.textContent = 'إجابة خاطئة!';
+            title.style.color = 'var(--danger)';
+        }
+
+        modal.classList.add('active');
+        setTimeout(() => {
+            modal.classList.remove('active');
+            if (callback) callback();
+        }, 1300); // وقت الانتقال للسؤال التالي
+    }
+
+    // --- متغيرات محرك اللعبة ---
+    let currentGame = null;
+    let currentQuestions = [];
+    let qIndex = 0;
+    let animInterval = null;
+    let wrongAnswers = []; // مصفوفة لتخزين الأخطاء
+
+    // --- التهيئة ---
+    function initApp() {
+        const menuGrid = document.getElementById('menu-grid');
+        menuGrid.innerHTML = '';
+        allGamesData.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'menu-card';
+            card.innerHTML = `
+                <div class="icon-container">${game.icon}</div>
+                <h3>${game.title}</h3>
+                <p>${game.desc}</p>
+            `;
+            card.onclick = () => startGame(game);
+            menuGrid.appendChild(card);
+        });
+        
+        document.body.addEventListener('touchstart', initAudio, { once: true });
+        document.body.addEventListener('click', initAudio, { once: true });
+    }
+
+    function returnToMenu() {
+        clearInterval(animInterval);
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+        document.getElementById('main-header').classList.remove('hidden');
+        document.getElementById('main-footer').classList.remove('hidden');
+    }
+
+    function updateProgress() {
+        document.getElementById('game-progress').innerText = `${qIndex + 1} / ${currentQuestions.length}`;
+    }
+
+    function gameComplete() {
+        const gc = document.getElementById('game-container');
+        playCorrect();
+        setTimeout(playCorrect, 300);
+
+        let score = currentQuestions.length - wrongAnswers.length;
+        let summaryHTML = '';
+
+        if (wrongAnswers.length > 0) {
+            summaryHTML += `
+            <div style="margin-top: 25px; text-align: right; background: #f8fafc; padding: 20px; border-radius: 15px; border: 2px solid #e2e8f0; max-height: 350px; overflow-y: auto;" class="errors-list">
+                <h3 style="color: var(--danger); margin-bottom: 15px; text-align: center; font-size: 1.4rem;">الأسئلة التي أخطأت فيها 📝</h3>
+                <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 15px;">`;
+            
+            wrongAnswers.forEach((item, index) => {
+                summaryHTML += `
+                <li style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-right: 5px solid var(--danger);">
+                    <div style="font-weight: bold; color: var(--primary); margin-bottom: 8px; font-size: 1.1rem;">${index + 1}. ${item.question}</div>
+                    <div style="color: #64748b; font-size: 1rem; margin-bottom: 5px;">إجابتك: <span style="color: var(--danger); text-decoration: line-through;">${item.selected}</span></div>
+                    <div style="color: var(--success); font-weight: bold; font-size: 1.1rem;">الإجابة الصحيحة: ${item.correct}</div>
+                </li>`;
+            });
+            summaryHTML += `</ul></div>`;
+        } else {
+            summaryHTML += `<p style="color: var(--success); font-size: 1.5rem; font-weight: bold; margin-top: 20px;">أداء مثالي! لم تخطئ في أي سؤال 🌟</p>`;
+        }
+
+        gc.innerHTML = `
+            <div style="text-align:center; padding: 40px 20px; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                <div style="display:flex; justify-content:center; margin-bottom: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10"/><path d="M12 17v4"/><path d="M12 3v14"/><path d="M5 7h14"/><path d="M12 3l-4 4 4 4 4-4-4-4z"/></svg>
+                </div>
+                <h2 style="color: var(--primary); margin-bottom: 10px; font-size:2rem; font-weight:800;">انتهت اللعبة!</h2>
+                <p style="font-size: 1.4rem; margin-bottom: 10px; color:#64748b; font-weight:bold;">نتيجتك: ${score} من ${currentQuestions.length}</p>
+                ${summaryHTML}
+                <div style="margin-top: 30px; background: #eff6ff; border: 2px solid #bfdbfe; border-radius: 16px; padding: 20px;">
+                    <p style="font-weight:800; color: var(--primary); margin-bottom: 12px; font-size: 1.1rem;">📤 أرسل نتيجتك للأستاذ خالد طاهر عبر واتساب</p>
+                    <input type="text" id="student-name-input" placeholder="اكتب اسمك هنا" style="width:100%; max-width:320px; padding:12px 16px; border-radius:12px; border:2px solid #cbd5e1; font-family:'Cairo',sans-serif; font-size:1rem; text-align:center; margin-bottom:14px;">
+                    <br>
+                    <button class="btn" style="background: linear-gradient(to bottom, #25d366, #128c7e); border-bottom-color:#0a6b5f;" onclick="sendResultToWhatsApp()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.656.843 5.12 2.26 7.15L.626 24l5.01-1.61c1.983 1.25 4.27 1.91 6.395 1.91 6.646 0 12.03-5.385 12.03-12.031S18.677 0 12.031 0zm6.544 17.202c-.273.766-1.58 1.464-2.185 1.503-.56.035-1.28.23-4.085-.86-3.39-1.32-5.59-4.78-5.736-4.97-.145-.19-1.37-1.82-1.37-3.475 0-1.655.857-2.47 1.164-2.8.307-.33.67-.413.89-.413.22 0 .44 0 .633.01.205.01.482-.08.736.53.264.634.904 2.203.984 2.366.08.163.133.353.033.553-.1.2-.153.326-.307.506-.154.18-.32.38-.453.506-.153.153-.314.316-.134.626.18.31.8 1.32 1.71 2.13.176.157.363.31.558.45 1.05.76 1.83 1.05 2.13 1.18.3.13.474.11.652-.09.18-.205.766-.893.97-1.2.204-.307.41-.256.69-.153.28.103 1.77.836 2.074.99.304.153.506.23.582.356.076.126.076.73-.197 1.496z"/></svg>
+                        إرسال النتيجة للأستاذ خالد
+                    </button>
+                    <p id="wa-status" style="margin-top:10px; font-weight:700; font-size:0.95rem;"></p>
+                </div>
+                <button class="btn" style="font-size:1.2rem; padding:15px 30px; margin-top: 20px;" onclick="returnToMenu()">العودة للقائمة الرئيسية</button>
+            </div>
+        `;
+
+        window.lastScore = score;
+        window.lastTotal = currentQuestions.length;
+        window.lastGameTitle = (currentGame && currentGame.title) ? currentGame.title : '';
+    }
+
+    function sendResultToWhatsApp() {
+        const nameInput = document.getElementById('student-name-input');
+        const statusEl = document.getElementById('wa-status');
+        const name = nameInput && nameInput.value.trim() ? nameInput.value.trim() : '';
+        if (!name) {
+            nameInput.style.border = '2px solid var(--danger)';
+            nameInput.placeholder = 'من فضلك اكتب اسمك أولاً!';
+            nameInput.focus();
+            if (statusEl) { statusEl.style.color = 'var(--danger)'; statusEl.textContent = 'يرجى كتابة الاسم قبل الإرسال.'; }
+            return;
+        }
+        const msg = 'مرحباً أستاذ خالد 👋' + '\n' +
+            'الاسم: ' + name + '\n' +
+            'الدرس: ' + LESSON_NAME + '\n' +
+            'اللعبة: ' + window.lastGameTitle + '\n' +
+            'النتيجة: ' + window.lastScore + ' من ' + window.lastTotal;
+        const url = 'https://wa.me/201201113833?text=' + encodeURIComponent(msg);
+        window.open(url, '_blank');
+        if (statusEl) { statusEl.style.color = 'var(--success)'; statusEl.textContent = 'تم فتح واتساب لإرسال النتيجة ✅'; }
+    }
+
+    function startGame(gameData) {
+        initAudio();
+        currentGame = gameData;
+        currentQuestions = shuffleArray([...gameData.questions]);
+        qIndex = 0;
+        wrongAnswers = []; // تصفير قائمة الأخطاء
+        
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('main-header').classList.add('hidden');
+        document.getElementById('main-footer').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        document.getElementById('game-title').innerText = gameData.title;
+        
+        renderNextState();
+    }
+
+    function renderNextState() {
+        if (qIndex >= currentQuestions.length) {
+            gameComplete();
+            return;
+        }
+
+        const gc = document.getElementById('game-container');
+        gc.innerHTML = '';
+        updateProgress();
+
+        if (currentGame.type === 'mcq') {
+            renderMCQ(gc);
+        } else if (currentGame.type === 'bubbles') {
+            renderBubbles(gc);
+        } else if (currentGame.type === 'shooting') {
+            renderShooting(gc);
+        } else if (currentGame.type === 'true_false') {
+            renderTrueFalse(gc);
+        }
+    }
+
+    // --- أنماط الألعاب ---
+
+    // 1. اختيارات (MCQ)
+    function renderMCQ(container) {
+        const qData = currentQuestions[qIndex];
+        const correctText = qData.options[qData.ans];
+        const shuffledOptions = shuffleArray([...qData.options]);
+
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'options-grid';
+        
+        let isAnswered = false;
+
+        shuffledOptions.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = opt;
+            btn.onclick = () => {
+                if(isAnswered) return;
+                isAnswered = true;
+
+                if (opt === correctText) {
+                    btn.classList.add('btn-correct');
+                    showFeedback(true, () => { qIndex++; renderNextState(); });
+                } else {
+                    btn.classList.add('btn-wrong');
+                    wrongAnswers.push({ question: qData.q, correct: correctText, selected: opt });
+                    showFeedback(false, () => { qIndex++; renderNextState(); });
+                }
+            };
+            btnContainer.appendChild(btn);
+        });
+
+        const qBox = document.createElement('div');
+        qBox.className = 'question-box';
+        qBox.innerText = qData.q;
+        
+        container.appendChild(qBox);
+        container.appendChild(btnContainer);
+    }
+
+    // 2. صح أم خطأ
+    function renderTrueFalse(container) {
+        const qData = currentQuestions[qIndex];
+        const correctText = qData.options[qData.ans];
+
+        const qBox = document.createElement('div');
+        qBox.className = 'question-box';
+        qBox.innerText = qData.q;
+        
+        const tfContainer = document.createElement('div');
+        tfContainer.className = 'tf-grid';
+        
+        let isAnswered = false;
+
+        // ترتيب ثابت (صح يميناً وخطأ يساراً)
+        const fixedOptions = ["صح", "خطأ"];
+
+        fixedOptions.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.style.flex = '1';
+            btn.style.minWidth = '200px';
+            btn.style.fontSize = '2rem';
+            btn.style.padding = '30px';
+            btn.style.justifyContent = 'center';
+            
+            if(opt === "صح") {
+                btn.style.background = "linear-gradient(to bottom, #10b981, #059669)";
+                btn.style.borderBottomColor = "#047857";
+            } else {
+                btn.style.background = "linear-gradient(to bottom, #ef4444, #dc2626)";
+                btn.style.borderBottomColor = "#b91c1c";
+            }
+
+            btn.innerText = opt;
+            
+            btn.onclick = () => {
+                if(isAnswered) return;
+                isAnswered = true;
+
+                if (opt === correctText) {
+                    btn.classList.add('btn-correct');
+                    showFeedback(true, () => { qIndex++; renderNextState(); });
+                } else {
+                    btn.classList.add('btn-wrong');
+                    wrongAnswers.push({ question: qData.q, correct: correctText, selected: opt });
+                    showFeedback(false, () => { qIndex++; renderNextState(); });
+                }
+            };
+            tfContainer.appendChild(btn);
+        });
+
+        container.appendChild(qBox);
+        container.appendChild(tfContainer);
+    }
+
+    // 3. الفقاعات المتساقطة
+    function renderBubbles(container) {
+        clearInterval(animInterval);
+        const qData = currentQuestions[qIndex];
+        const correctText = qData.options[qData.ans];
+        const shuffledOptions = shuffleArray([...qData.options]);
+
+        const qBox = document.createElement('div');
+        qBox.className = 'question-box';
+        qBox.innerText = qData.q;
+        
+        const area = document.createElement('div');
+        area.className = 'bubbles-area';
+
+        let bubbles = [];
+        let isAnswered = false;
+
+        shuffledOptions.forEach((opt, index) => {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = `<span>${opt}</span>`;
+            
+            let leftPos = 2 + (index * 24); 
+            bubble.style.left = leftPos + '%';
+            
+            let topPos = -100 - (Math.random() * 80);
+            bubble.style.top = topPos + 'px';
+            
+            let speed = 0.42 + Math.random() * 0.42; 
+
+            bubble.onclick = () => {
+                if (isAnswered) return;
+                isAnswered = true;
+                clearInterval(animInterval);
+                if (opt === correctText) {
+                    bubble.style.background = 'var(--success)';
+                    bubble.style.color = 'white';
+                    showFeedback(true, () => { qIndex++; renderNextState(); });
+                } else {
+                    bubble.style.background = 'var(--danger)';
+                    bubble.style.color = 'white';
+                    wrongAnswers.push({ question: qData.q, correct: correctText, selected: opt });
+                    showFeedback(false, () => { qIndex++; renderNextState(); });
+                }
+            };
+
+            area.appendChild(bubble);
+            bubbles.push({ el: bubble, top: topPos, speed: speed, isCorrect: opt === correctText, active: true });
+        });
+
+        container.appendChild(qBox);
+        container.appendChild(area);
+        
+        let hint = document.createElement('div');
+        hint.style.textAlign = 'center';
+        hint.style.marginTop = '15px';
+        hint.style.color = 'var(--primary)';
+        hint.style.fontWeight = 'bold';
+        hint.style.fontSize = '1.1rem';
+        hint.innerHTML = `💡 اضغط على الفقاعة التي تحمل الإجابة الصحيحة قبل أن تسقط!`;
+        container.appendChild(hint);
+
+        let areaHeight = 400;
+
+        animInterval = setInterval(() => {
+            if (isAnswered) return;
+            bubbles.forEach(b => {
+                if (!b.active) return;
+                b.top += b.speed;
+                b.el.style.top = b.top + 'px';
+                
+                b.el.style.transform = `translateX(${Math.sin(b.top / 20) * 5}px)`;
+
+                if (b.top > areaHeight) {
+                    b.active = false;
+                    b.el.style.display = 'none';
+                    if (b.isCorrect && !isAnswered) {
+                        isAnswered = true;
+                        clearInterval(animInterval);
+                        wrongAnswers.push({ question: qData.q, correct: correctText, selected: "سقطت دون اختيار" });
+                        showFeedback(false, () => { qIndex++; renderNextState(); });
+                    }
+                }
+            });
+        }, 30);
+    }
+
+    // 4. التنشين
+    function renderShooting(container) {
+        clearInterval(animInterval);
+        const qData = currentQuestions[qIndex];
+        const correctText = qData.options[qData.ans];
+        const shuffledOptions = shuffleArray([...qData.options]);
+
+        const qBox = document.createElement('div');
+        qBox.className = 'question-box';
+        qBox.innerText = qData.q;
+        
+        const area = document.createElement('div');
+        area.className = 'shooting-area';
+
+        let isAnswered = false;
+
+        shuffledOptions.forEach((opt, index) => {
+            const bird = document.createElement('div');
+            bird.className = 'target-bird';
+            
+            bird.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> <span>${opt}</span>`;
+            
+            let topPos = 15 + (index * 20); 
+            bird.style.top = topPos + '%';
+            
+            let pos = (index % 2 === 0) ? -200 : window.innerWidth;
+            let speed = (Math.random() * 1.0 + 0.8) * ((index % 2 === 0) ? 1 : -1);
+            
+            bird.style.left = pos + 'px';
+
+            bird.onclick = () => {
+                if(isAnswered) return;
+                isAnswered = true;
+
+                if (opt === correctText) {
+                    bird.style.background = 'var(--success)';
+                    bird.style.color = 'white';
+                    bird.style.borderColor = 'white';
+                    showFeedback(true, () => { qIndex++; renderNextState(); });
+                } else {
+                    bird.style.background = 'var(--danger)';
+                    bird.style.color = 'white';
+                    bird.style.borderColor = 'white';
+                    wrongAnswers.push({ question: qData.q, correct: correctText, selected: opt });
+                    showFeedback(false, () => { qIndex++; renderNextState(); });
+                }
+            };
+
+            area.appendChild(bird);
+
+            animInterval = setInterval(() => {
+                if (isAnswered) return;
+                pos += speed;
+                if (pos > window.innerWidth + 50) pos = -250;
+                if (pos < -250) pos = window.innerWidth + 50;
+                bird.style.left = pos + 'px';
+            }, 30);
+        });
+
+        container.appendChild(qBox);
+        container.appendChild(area);
+        
+        let hint = document.createElement('div');
+        hint.style.textAlign = 'center';
+        hint.style.marginTop = '15px';
+        hint.style.color = 'var(--primary)';
+        hint.style.fontWeight = 'bold';
+        hint.style.fontSize = '1.1rem';
+        hint.innerHTML = `💡 اضغط على الفقاعة التي تحمل الإجابة الصحيحة قبل أن تسقط!`;
+        container.appendChild(hint);
+
+        let areaHeight = 400;
+
+        animInterval = setInterval(() => {
+            if (isAnswered) return;
+            bubbles.forEach(b => {
+                if (!b.active) return;
+                b.top += b.speed;
+                b.el.style.top = b.top + 'px';
+                
+                b.el.style.transform = `translateX(${Math.sin(b.top / 20) * 5}px)`;
+
+                if (b.top > areaHeight) {
+                    b.active = false;
+                    b.el.style.display = 'none';
+                    if (b.isCorrect && !isAnswered) {
+                        isAnswered = true;
+                        clearInterval(animInterval);
+                        wrongAnswers.push({ question: qData.q, correct: correctText, selected: "سقطت دون اختيار" });
+                        showFeedback(false, () => { qIndex++; renderNextState(); });
+                    }
+                }
+            });
+        }, 20);
+    }
+
+    // 4. التنشين
+    function renderShooting(container) {
+        clearInterval(animInterval);
+        const qData = currentQuestions[qIndex];
+        const correctText = qData.options[qData.ans];
+        const shuffledOptions = shuffleArray([...qData.options]);
+
+        const qBox = document.createElement('div');
+        qBox.className = 'question-box';
+        qBox.innerText = qData.q;
+        
+        const area = document.createElement('div');
+        area.className = 'shooting-area';
+
+        let isAnswered = false;
+
+        shuffledOptions.forEach((opt, index) => {
+            const bird = document.createElement('div');
+            bird.className = 'target-bird';
+            
+            bird.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> <span>${opt}</span>`;
+            
+            let topPos = 15 + (index * 20); 
+            bird.style.top = topPos + '%';
+            
+            let pos = (index % 2 === 0) ? -200 : window.innerWidth;
+            let speed = (Math.random() * 2.5 + 1.5) * ((index % 2 === 0) ? 1 : -1);
+            
+            bird.style.left = pos + 'px';
+
+            bird.onclick = () => {
+                if(isAnswered) return;
+                isAnswered = true;
+
+                if (opt === correctText) {
+                    bird.style.background = 'var(--success)';
+                    bird.style.color = 'white';
+                    bird.style.borderColor = 'white';
+                    showFeedback(true, () => { qIndex++; renderNextState(); });
+                } else {
+                    bird.style.background = 'var(--danger)';
+                    bird.style.color = 'white';
+                    bird.style.borderColor = 'white';
+                    wrongAnswers.push({ question: qData.q, correct: correctText, selected: opt });
+                    showFeedback(false, () => { qIndex++; renderNextState(); });
+                }
+            };
+
+            area.appendChild(bird);
+
+            animInterval = setInterval(() => {
+                if (isAnswered) return;
+                pos += speed;
+                if (pos > window.innerWidth + 50) pos = -250;
+                if (pos < -250) pos = window.innerWidth + 50;
+                bird.style.left = pos + 'px';
+            }, 20);
+        });
+
+        container.appendChild(qBox);
+        container.appendChild(area);
+        
+        let hint = document.createElement('div');
+        hint.style.textAlign = 'center';
+        hint.style.marginTop = '15px';
+        hint.style.color = 'var(--primary)';
+        hint.style.fontWeight = 'bold';
+        hint.style.fontSize = '1.1rem';
+        hint.style.display = 'flex';
+        hint.style.alignItems = 'center';
+        hint.style.justifyContent = 'center';
+        hint.style.gap = '8px';
+        hint.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> اضغط على الإجابة الصحيحة وهي تتحرك لاصطيادها!`;
+        container.appendChild(hint);
+    }
+
+    window.onload = initApp;
+</script>
+</body>
