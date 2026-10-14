@@ -2013,5 +2013,133 @@
 
     window.onload = initApp;
 </script>
+<!-- ===== AUTO-RESULTS: start ===== -->
+<script>
+// رابط جدول نتائج الأستاذ (Google Apps Script Web App)
+window.RESULTS_URL = "https://script.google.com/macros/s/AKfycbwJvHB2cjss-h9IyiIPNbfDgfI4--WQaSJbTmP9NorPytt-aPNwb_0KXkg_tTAJ3CEX/exec";
+</script>
+<style>
+#__name-gate{position:fixed;inset:0;z-index:999998;background:rgba(15,23,42,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;direction:rtl;font-family:'Cairo',sans-serif}
+#__name-gate .ng-card{background:#fff;border-radius:22px;padding:28px 22px;width:100%;max-width:420px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#__name-gate .ng-icon{font-size:3rem;line-height:1;margin-bottom:8px}
+#__name-gate h2{margin:0 0 6px;color:#1e3a8a;font-size:1.5rem;font-weight:900}
+#__name-gate p{margin:0 0 16px;color:#64748b;font-weight:600;font-size:1rem}
+#__name-gate input{width:100%;box-sizing:border-box;padding:14px 16px;border-radius:14px;border:2px solid #cbd5e1;font-family:inherit;font-size:1.15rem;text-align:center;outline:none}
+#__name-gate input:focus{border-color:#2563eb}
+#__name-gate .ng-warn{display:none;color:#dc2626;font-weight:700;margin-top:8px}
+#__name-gate button{margin-top:16px;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(to bottom,#2563eb,#1d4ed8);color:#fff;font-family:inherit;font-size:1.2rem;font-weight:800;cursor:pointer}
+#__name-chip{position:fixed;bottom:14px;right:14px;z-index:99990;background:#fff;color:#1e3a8a;border:2px solid #bfdbfe;border-radius:999px;padding:6px 14px;font-family:'Cairo',sans-serif;font-weight:800;font-size:.95rem;box-shadow:0 4px 12px rgba(0,0,0,.12);direction:rtl;cursor:pointer;max-width:70vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.__ng-shake{animation:__ngshake .4s}
+@keyframes __ngshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#__auto-status{margin-top:26px;background:#eff6ff;border:2px solid #bfdbfe;border-radius:16px;padding:18px;font-weight:800;font-size:1.1rem;line-height:1.8;color:#1e3a8a}
+</style>
+<script>
+/* ===== اسم الطالب قبل الحل + إرسال النتيجة تلقائيًا لجدول الأستاذ (Google Sheets) ===== */
+(function () {
+  var QKEY = '__pending_results_v1', NKEY = '__student_name_v1';
+  var studentName = '';
+  function url() { return (window.RESULTS_URL || '').trim(); }
+  function g(v) { try { return v(); } catch (e) { return undefined; } }
+  function norm(s) { return String(s == null ? '' : s).replace(/\s+/g, ' ').trim(); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function loadQ() { try { return JSON.parse(localStorage.getItem(QKEY) || '[]'); } catch (e) { return []; } }
+  function saveQ(q) { try { localStorage.setItem(QKEY, JSON.stringify(q)); } catch (e) {} }
+
+  function post(item) {
+    return fetch(url(), { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(item) });
+  }
+  function flush() {
+    if (!url() || !navigator.onLine) return;
+    var q = loadQ(); if (!q.length) return;
+    var item = q[0];
+    post(item).then(function () { var r = loadQ().filter(function (x) { return x.id !== item.id; }); saveQ(r); if (r.length) flush(); }).catch(function () {});
+  }
+  window.addEventListener('online', flush);
+  window.addEventListener('load', function () { setTimeout(flush, 1500); });
+
+  /* ---------- شاشة إدخال الاسم ---------- */
+  function updateChip() {
+    var c = document.getElementById('__name-chip');
+    if (!c) { c = document.createElement('div'); c.id = '__name-chip'; c.title = 'تغيير الاسم'; c.onclick = function () { showGate(); }; document.body.appendChild(c); }
+    c.textContent = '👤 ' + studentName;
+  }
+  function showGate() {
+    if (document.getElementById('__name-gate')) return;
+    var saved = ''; try { saved = localStorage.getItem(NKEY) || ''; } catch (e) {}
+    var d = document.createElement('div'); d.id = '__name-gate';
+    d.innerHTML = '<div class="ng-card"><div class="ng-icon">✍️</div><h2>أهلًا بك يا بطل!</h2>' +
+      '<p>اكتب اسمك قبل ما تبدأ الحل، عشان نتيجتك توصل للأستاذ</p>' +
+      '<input type="text" id="__ng-input" placeholder="اكتب اسمك ثلاثي" autocomplete="name" value="' + esc(saved) + '">' +
+      '<div class="ng-warn" id="__ng-warn">من فضلك اكتب اسمك أولًا ✍️</div>' +
+      '<button type="button" id="__ng-btn">ابدأ الحل 🚀</button></div>';
+    document.body.appendChild(d);
+    var inp = document.getElementById('__ng-input');
+    function ok() {
+      var n = norm(inp.value);
+      if (n.length < 2) {
+        document.getElementById('__ng-warn').style.display = 'block';
+        inp.classList.remove('__ng-shake'); void inp.offsetWidth; inp.classList.add('__ng-shake'); inp.focus(); return;
+      }
+      studentName = n; try { localStorage.setItem(NKEY, n); } catch (e) {}
+      d.remove(); updateChip();
+    }
+    document.getElementById('__ng-btn').onclick = ok;
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') ok(); });
+    setTimeout(function () { inp.focus(); }, 50);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showGate); else showGate();
+
+  // منع بدء أي لعبة قبل كتابة الاسم
+  if (typeof window.startGame === 'function') {
+    var _start = window.startGame;
+    window.startGame = function () { if (!studentName) { showGate(); return; } return _start.apply(this, arguments); };
+  }
+
+  /* ---------- إرسال تلقائي عند إجابة آخر سؤال ---------- */
+  function setStatus(html, color) {
+    var s = document.getElementById('__auto-status'); if (!s) return;
+    s.innerHTML = html; if (color) { s.style.color = color; s.style.borderColor = color; }
+  }
+  function autoSend() {
+    var total = g(function () { return currentQuestions.length; }) || 0;
+    var score = total - (g(function () { return wrongAnswers.length; }) || 0);
+
+    // استبدال صندوق واتساب القديم بحالة الإرسال التلقائي
+    var inp = document.getElementById('student-name-input');
+    var box = inp ? inp.parentNode : null;
+    if (box && box.id === 'game-container') box = null;
+    var st = document.createElement('div'); st.id = '__auto-status';
+    if (box) box.parentNode.replaceChild(st, box);
+    else { var gc = document.getElementById('game-container'); if (gc) gc.appendChild(st); }
+
+    var who = '👤 ' + esc(studentName) + '<br>';
+    if (!url() || url().indexOf('__RESULTS') === 0) { setStatus(who + '⚠️ رابط استلام النتائج غير مضبوط', '#dc2626'); return; }
+
+    var item = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+      name: studentName,
+      lesson: norm(g(function () { return LESSON_FULL_NAME; }) || g(function () { return LESSON_TITLE; }) || g(function () { return LESSON_NAME; }) || document.title),
+      game: norm(g(function () { return currentGame.title; }) || ''),
+      score: score, total: total,
+      page: decodeURIComponent(location.pathname.split('/').slice(-3).join('/')),
+      clientTime: new Date().toISOString()
+    };
+    var q = loadQ(); q.push(item); saveQ(q);
+    if (!navigator.onLine) { setStatus(who + '📴 مفيش إنترنت — نتيجتك هتتسلم للأستاذ تلقائيًا أول ما النت يرجع', '#d97706'); return; }
+    setStatus(who + '⏳ جاري إرسال نتيجتك للأستاذ...', '#2563eb');
+    post(item).then(function () {
+      saveQ(loadQ().filter(function (x) { return x.id !== item.id; }));
+      setStatus(who + '✅ تم إرسال نتيجتك للأستاذ بنجاح', '#16a34a');
+    }).catch(function () {
+      setStatus(who + '📴 النت ضعيف — نتيجتك هتتسلم تلقائيًا لما النت يرجع', '#d97706');
+    });
+  }
+  if (typeof window.gameComplete === 'function') {
+    var _done = window.gameComplete;
+    window.gameComplete = function () { var r = _done.apply(this, arguments); try { autoSend(); } catch (e) {} return r; };
+  }
+})();
+</script>
+<!-- ===== AUTO-RESULTS: end ===== -->
 </body>
 </html>
